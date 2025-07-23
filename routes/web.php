@@ -143,7 +143,7 @@ Route::group(['middleware' => ['admin']], function () {
 
     Route::get('admin/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::post('admin/purchase/export-pdf', [PurchaseController::class, 'exportPdf'])->name('purchase.exportPdf');
-
+});
 
 Route::get('/', [HomeController::class, 'home']);
 Route::get('metode-pembayaran', [HomeController::class, 'payment_methods']);
@@ -173,7 +173,6 @@ Route::post('contact', [PageController::class, 'submit_contact']);
 Route::get('admin/contactus', [PageController::class, 'contactus']);
 Route::get('admin/contactus/delete/{id}', [PageController::class, 'contactus_delete']);
 
-});
 
 
 Route::post('auth_register', [AuthController::class, 'auth_register']);
