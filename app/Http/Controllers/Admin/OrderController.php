@@ -8,7 +8,7 @@ use App\Models\OrderModel;
 use App\Models\Courier;
 use Illuminate\Support\Facades\DB;
 use App\Models\ProductModel;
-
+use Carbon\Carbon;
 class OrderController extends Controller
 {
     public function waiting(Request $request)
@@ -26,7 +26,7 @@ class OrderController extends Controller
             ->orWhere('village', 'like', '%' . $request->address . '%')
             ->orWhere('subdistrict', 'like', '%' . $request->address . '%');
         });
-    }   
+    }
         if ($request->filled('from_date')) $query->whereDate('created_at', '>=', $request->from_date);
         if ($request->filled('to_date')) $query->whereDate('created_at', '<=', $request->to_date);
         $data['orders'] = $query->with('courier')->orderBy('created_at', 'desc')
@@ -79,8 +79,7 @@ public function reject(Request $request, $id)
         $order->save();
         return redirect()->back()->with('error', 'Pembayaran ditolak dan stok dikembalikan.');
     }
-
-   public function markDone($id)
+public function markDone($id)
 {
     DB::beginTransaction();
 
@@ -95,7 +94,6 @@ public function reject(Request $request, $id)
         if (!$order->stock_deducted) {
             foreach ($order->getOrderItem as $item) {
                 $product = ProductModel::find($item->product_id);
-
                 if ($product && $product->stock >= $item->qty) {
                     $product->stock -= $item->qty;
                     $product->save();
@@ -106,19 +104,26 @@ public function reject(Request $request, $id)
             $order->stock_deducted = true;
         }
 
+        // Hapus log pengiriman dari courier_delivery_log
+        DB::table('courier_delivery_log')
+            ->where('order_id', $order->id)
+            ->delete();
+
         // Tandai order sebagai selesai
         $order->is_done = 1;
-        $order->is_payment = 3; // Opsional: ubah status pembayaran jadi "selesai"
+        $order->is_payment = 3;
         $order->save();
 
         DB::commit();
-
-        return back()->with('success', 'Pesanan berhasil ditandai selesai.');
+        return back()->with('success', 'Pesanan berhasil ditandai selesai. Pengiriman kurir dikurangi.');
     } catch (\Exception $e) {
         DB::rollback();
         return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
 }
+
+
+
 
 public function cancelVerify($id)
     {
@@ -156,48 +161,61 @@ public function cancelVerify($id)
         return redirect()->back()->with('warning', 'Penolakan dibatalkan.');
     }
 
-    public function detail($id)
-    {
-        $data['header_title'] = 'Detail Pesanan';
-        $data['order'] = OrderModel::with(['items.product', 'courier'])->findOrFail($id);
-        $data['couriers'] = Courier::all();
+public function detail($id)
+{
+    $data['header_title'] = 'Detail Pesanan';
+    $data['order'] = OrderModel::with(['items.product', 'courier'])->findOrFail($id);
 
-        return view('admin.orders.detail', $data);
-    }
+    // Daftar kurir + jumlah barang dibawa hari ini
+    $data['couriers'] = DB::table('couriers')
+        ->leftJoin('courier_delivery_log', function ($join) {
+            $join->on('couriers.id', '=', 'courier_delivery_log.courier_id')
+                ->whereDate('courier_delivery_log.delivered_date', Carbon::today());
+        })
+        ->select(
+            'couriers.id',
+            'couriers.name',
+            DB::raw('COALESCE(SUM(courier_delivery_log.quantity), 0) as total_barang')
+        )
+        ->groupBy('couriers.id', 'couriers.name')
+        ->get();
+
+    return view('admin.orders.detail', $data);
+}
+
 
     public function updateShipping(Request $request, $id)
-    {
-        $request->validate([
-            'courier_id' => 'required|exists:couriers,id',
-            'delivered_time' => 'required|date',
-            'estimated_arrival' => 'required|date|after_or_equal:delivered_time',
+{
+    $request->validate([
+        'courier_id' => 'required|exists:couriers,id',
+        'delivered_time' => 'required|date',
+        'estimated_arrival' => 'required|date|after_or_equal:delivered_time',
+    ]);
+
+    $order = OrderModel::with('items')->findOrFail($id);
+    $courier = Courier::findOrFail($request->courier_id);
+
+    $order->courier_id = $courier->id;
+    $order->courier_name = $courier->name;
+    $order->delivered_time = $request->delivered_time;
+    $order->estimated_arrival = $request->estimated_arrival;
+    $order->is_payment = 1;
+    $order->status = 'confirmed';
+    $order->save();
+
+    // Catat barang yang dikirim oleh kurir
+    foreach ($order->items as $item) {
+        DB::table('courier_delivery_log')->insert([
+            'courier_id' => $courier->id,
+            'order_id' => $order->id,
+            'product_id' => $item->product_id,
+            'quantity' => $item->quantity, // Barang ditambahkan
+            'delivered_date' => Carbon::today(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
-
-        $order = OrderModel::with('items')->findOrFail($id);
-        $courier = Courier::findOrFail($request->courier_id);
-
-        $order->courier_id = $courier->id;
-        $order->courier_name = $courier->name;
-        $order->delivered_time = $request->delivered_time;
-        $order->estimated_arrival = $request->estimated_arrival;
-        $order->is_payment = 1;
-        $order->status = 'confirmed';
-        $order->save();
-
-        $order->reduceStockIfNeeded();
-
-        if (!$order->stock_deducted) {
-            foreach ($order->items as $item) {
-                $product = ProductModel::find($item->product_id);
-                if ($product) {
-                    $product->stock -= $item->quantity;
-                    $product->save();
-                }
-            }
-            $order->stock_deducted = true;
-        }
-
-        $order->save();
-        return redirect()->route('admin.orders.waiting')->with('success', 'Pengiriman disimpan dan stok dikurangi.');
     }
+
+    return redirect()->route('admin.orders.waiting')->with('success', 'Pengiriman disimpan dan stok dikurangi.');
+}
 }

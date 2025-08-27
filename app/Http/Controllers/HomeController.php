@@ -16,7 +16,7 @@ class HomeController extends Controller
         ->where('is_delete', 0)
         ->latest()
         ->take(20)
-        ->get();
+        ->paginate(8);
 
     $data['activeDiscounts'] = DiscountCodeModel::where('status', 0)
         ->where('is_delete', 0)

@@ -6,23 +6,26 @@
         {{-- Produk --}}
         <div class="page-content my-5">
             <div class="container">
-            <div class="products mb-5">
-                <div class="row justify-content-center mb-4 align-items-center">
-                <div class="col-md-8">
-                    <h1 class="title text-left mb-0" style="font-size:2.5rem;">Produk Terbaru</h1>
-                </div>
-                <div class="col-md-4 text-md-end mt-2 mt-md-0">
-                    <span class="text-muted">Produk-produk terbaru kami tersedia di sini!</span>
-                </div>
-                </div>
-                    <div class="row g-4 justify-content-center">
+                <div class="products mb-5">
+                    <div class="row justify-content-center mb-4 align-items-center">
+                        <div class="col-md-8">
+                            <h1 class="title text-left mb-0" style="font-size:2.5rem;">Produk Terbaru</h1>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-2 mt-md-0">
+                            <span class="text-muted">Produk-produk terbaru kami tersedia di sini!</span>
+                        </div>
+                    </div>
+
+                    {{-- Produk List --}}
+                    <div class="row g-5 justify-content-center">
                         @foreach ($products as $value)
                             @php
                                 $getProductImage = $value->getImageSingle($value->id);
                             @endphp
-                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex mb-4" style="margin-bottom:30px;">
                                 <div class="product product-7 text-center shadow-sm rounded-4 w-100 h-100 bg-white p-3 position-relative"
                                     style="transition: box-shadow 0.2s;">
+
                                     <figure class="product-media mb-3" style="overflow:hidden; border-radius:12px;">
                                         <a href="{{ url($value->slug) }}">
                                             @if (!empty($getProductImage) && !empty($getProductImage->getLogo()))
@@ -49,6 +52,7 @@
                                             @endif
                                         </div>
                                     </figure>
+
                                     <div class="product-body">
                                         <div class="product-cat mb-1">
                                             <a href="{{ url($value->category_slug . '/' . $value->sub_category_slug) }}"
@@ -77,6 +81,13 @@
                             </div>
                         @endforeach
                     </div>
+                    {{-- End Produk List --}}
+
+                    {{-- Pagination --}}
+                    <div class="d-flex justify-content-center mt-4">
+                        {!! $products->appends(request()->except('page'))->links() !!}
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -109,5 +120,4 @@
         @endif
 
     </main>
-
 @endsection

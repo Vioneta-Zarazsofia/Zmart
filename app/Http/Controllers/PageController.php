@@ -56,8 +56,6 @@ if ($request->hasFile('contact_image')) {
     $save->contact_image = $filename;
 }
 
-
-    // Upload logic tetap
     if ($request->hasFile('logo')) {
         $file = $request->file('logo');
         $filename = Str::random(10) . '.' . $file->getClientOriginalExtension();

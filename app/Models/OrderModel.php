@@ -28,53 +28,6 @@ public function getOrderItem()
 {
     return $this->hasMany(OrderItemModel::class, 'order_id', 'id');
 }
-
-    // //use part
-
-    // static public function getTotalOrderUser($user_id)
-    // {
-    //     return self::select('id')
-    //     ->where('user_id', '=', $user_id)
-    //     ->where('is_payment', '=', 1)
-    //     ->where('is_delete', '=', 0)
-    //     ->count();
-    // }
-    //  static public function getTotalTodayOrderUser($user_id)
-    // {
-    //     return self::select('id')
-    //     ->where('user_id', '=', $user_id)
-    //     ->where('is_payment', '=', 1)
-    //     ->where('is_delete', '=', 0)
-    //     ->whereDate('created_at', '=', date('Y-m-d'))
-    //     ->count();
-    // }
-    // static public function getTotalAmountUser($user_id)
-    // {
-    //     return self::where('user_id', '=', $user_id)
-    //     ->where('is_payment', '=', 1)
-    //     ->where('is_delete', '=', 0)
-    //     ->sum('total_amount');
-    // }
-    // static public function getTotalTodayAmountUser($user_id)
-    // {
-    //     return self::where('user_id', '=', $user_id)
-    //     ->where('is_payment', '=', 1)
-    //     ->where('is_delete', '=', 0)
-    //     ->whereDate('created_at', '=', date('Y-m-d'))
-    //     ->sum('total_amount');
-    // }
-    // // 0: terverifikasi, 1: selesai, 3: ditolak
-    // static public function getTotalOrderUserStatus($user_id, $status)
-    // {
-    //     return self::select('id')
-    //     ->where('user_id', '=', $user_id)
-    //     ->where('is_payment', '=', 1)
-    //     ->where('is_delete', '=', 0)
-    //     ->where('status', '=', $status)
-    //     ->count();
-    // }
-
-        //end user part
     static public function getTotalOrder()
     {
         return self::where('is_done', 1)

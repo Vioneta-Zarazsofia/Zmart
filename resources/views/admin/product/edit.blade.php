@@ -123,13 +123,6 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Harga Lama (Rp)</label>
-                                        <input type="number" name="old_price" class="form-control"
-                                            value="{{ $product->old_price }}" placeholder="Harga Sebelumnya">
-                                    </div>
-                                </div> --}}
                             </div>
 
                             {{-- Upload Gambar --}}
@@ -160,20 +153,10 @@
                                 <textarea name="description" class="form-control" rows="2">{{ $product->description }}</textarea>
                             </div>
 
-                            {{-- <div class="form-group">
-                                <label>Deskripsi Lengkap</label>
-                                <textarea name="description" class="form-control editor">{{ $product->description }}</textarea>
-                            </div> --}}
-
                             <div class="form-group">
                                 <label>Informasi Tambahan</label>
                                 <textarea name="additional_information" class="form-control editor">{{ $product->additional_information }}</textarea>
                             </div>
-
-                            {{-- <div class="form-group">
-                                <label>Pengembalian & Pengiriman</label>
-                                <textarea name="shipping_return" class="form-control editor">{{ $product->shipping_return }}</textarea>
-                            </div> --}}
 
                             <div class="form-group">
                                 <label>Status Produk</label>

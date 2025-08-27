@@ -135,14 +135,15 @@ Route::group(['middleware' => ['admin']], function () {
     Route::get('admin/supplier/edit/{id}', [SupplierController::class, 'edit']);
     Route::post('admin/supplier/edit/{id}', [SupplierController::class, 'update']);
     Route::get('admin/supplier/delete/{id}', [SupplierController::class, 'delete']);
-
-    // Route::get('admin/purchase', [PurchaseController::class, 'index']);
-    // Route::post('admin/purchase/fetch-products', [PurchaseController::class, 'fetchProducts']);
-    // Route::post('admin/purchase/submit', [PurchaseController::class, 'store']);
-    // Route::get('admin/purchase/pdf/{id}', [PurchaseController::class, 'generatePDF']);
-
     Route::get('admin/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::post('admin/purchase/export-pdf', [PurchaseController::class, 'exportPdf'])->name('purchase.exportPdf');
+    Route::get('purchase/{id}/pdf', [PurchaseController::class, 'pdf'])->name('purchase.pdf');
+    Route::get('admin/purchase/{id}/detail', [PurchaseController::class, 'show'])->name('purchase.show');
+    Route::post('admin/purchase/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::post('/purchase/store', [PurchaseController::class, 'store'])->name('purchase.store');
+    Route::get('/purchase/{id}/confirm', [PurchaseController::class, 'confirm'])->name('purchase.confirm');
+    Route::post('/purchase/{id}/confirm', [PurchaseController::class, 'confirm'])->name('purchase.confirm');
+
 });
 
 Route::get('/', [HomeController::class, 'home']);
@@ -151,8 +152,6 @@ Route::get('pengembalian', [HomeController::class, 'returns']);
 Route::get('pengiriman', [HomeController::class, 'shipping']);
 Route::get('syarat-ketentuan', [HomeController::class, 'terms_conditions']);
 Route::get('kebijakan-privasi', [HomeController::class, 'privacy_policy']);
-
-
 
 // FAQ Admin
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
@@ -173,8 +172,6 @@ Route::post('contact', [PageController::class, 'submit_contact']);
 Route::get('admin/contactus', [PageController::class, 'contactus']);
 Route::get('admin/contactus/delete/{id}', [PageController::class, 'contactus_delete']);
 
-
-
 Route::post('auth_register', [AuthController::class, 'auth_register']);
 Route::post('auth_login', [AuthController::class, 'auth_login']);
 Route::get('logout_customer', [AuthController::class, 'logout_customer']);
@@ -183,7 +180,6 @@ Route::post('forgot-password', [AuthController::class, 'auth_forgot_password']);
 Route::get('reset/{token}', [AuthController::class, 'reset']);
 Route::post('reset/{token}', [AuthController::class, 'auth_reset']);
 Route::get('activate/{id}', [AuthController::class, 'activate_email']);
-
 
 Route::get('cart', [PaymentController::class, 'cart']);
 Route::post('update_cart', [PaymentController::class, 'update_cart']);
@@ -204,8 +200,6 @@ Route::prefix('admin/orders')->group(function () {
     Route::get('/detail/{id}', [OrderController::class, 'detail'])->name('admin.orders.detail');
      Route::post('/update-shipping/{id}', [OrderController::class, 'updateShipping'])->name('admin.orders.update_shipping');
 });
-
-
 
 Route::get('/payment/confirm/{order_id}', [PaymentController::class, 'confirmPaymentForm'])->name('payment.confirm.form');
 Route::post('/payment/confirm/{order_id}', [PaymentController::class, 'submitPaymentProof'])->name('payment.confirm.submit');

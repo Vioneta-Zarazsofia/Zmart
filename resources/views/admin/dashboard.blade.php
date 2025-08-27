@@ -151,6 +151,71 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card">
+                            {{-- Container untuk Grafik Pembelian Supplier --}}
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="card shadow-sm border-0 mb-4">
+                                        <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                                            <h4 class="text-primary font-weight-bold mb-0">Grafik Pembelian Produk per Bulan
+                                                per Supplier - {{ $year }}</h4>
+                                            <select class="form-control ChangeYear w-auto" style="min-width: 120px;">
+                                                @for ($y = date('Y') - 5; $y <= date('Y'); $y++)
+                                                    <option value="{{ $y }}"
+                                                        {{ $y == $year ? 'selected' : '' }}>{{ $y }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+                                        <div class="card-body">
+                                            <div style="height: 400px;">
+                                                <canvas id="supplierChart"></canvas>
+                                            </div>
+                                            <div class="mt-2 text-muted small">
+                                                * Setiap warna mewakili kombinasi Supplier - Produk tertentu
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Tabel Detail Pembelian --}}
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-header bg-white border-bottom-0">
+                                            <h4 class="mb-0">Detail Pembelian Produk per Bulan per Supplier</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover table-sm mb-0">
+                                                    <thead class="bg-light text-dark text-center">
+                                                        <tr>
+                                                            <th>Bulan</th>
+                                                            <th>Nama Supplier</th>
+                                                            <th>Nama Produk</th>
+                                                            <th>Jumlah Dibeli</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse ($purchaseDetail as $item)
+                                                            <tr>
+                                                                <td>{{ \Carbon\Carbon::create()->month($item->bulan)->locale('id')->translatedFormat('F') }}
+                                                                </td>
+                                                                <td>{{ $item->supplier }}</td>
+                                                                <td>{{ $item->produk }}</td>
+                                                                <td class="text-center">{{ $item->jumlah_dibeli }}</td>
+                                                            </tr>
+                                                        @empty
+                                                            <tr>
+                                                                <td colspan="4" class="text-center text-muted py-3">
+                                                                    Tidak ada data pembelian.</td>
+                                                            </tr>
+                                                        @endforelse
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
                         <!-- /.card -->
                         <div class="card">
                             <div class="card-header border-0">
@@ -209,27 +274,31 @@
                                                         @if ($order->payment_proof)
                                                             <a href="{{ asset($order->payment_proof) }}" target="_blank">
                                                                 <img src="{{ asset($order->payment_proof) }}"
-                                                                    alt="Bukti Transfer" class="img-fluid rounded shadow-sm"
+                                                                    alt="Bukti Transfer"
+                                                                    class="img-fluid rounded shadow-sm"
                                                                     style="max-height: 250px;">
                                                             </a>
                                                         @else
                                                             <p class="text-danger">Belum ada bukti pembayaran</p>
                                                         @endif
-
                                                     </td>
                                                     <td>
                                                         @if (isset($order->is_done) && $order->is_done == 1)
-                                                            <span class="badge badge-primary"><i
-                                                                    class="fas fa-check-double"></i> Selesai</span>
+                                                            <span class="badge badge-primary">
+                                                                <i class="fas fa-check-double"></i> Selesai
+                                                            </span>
                                                         @elseif ($order->is_payment == 1)
-                                                            <span class="badge badge-success"><i
-                                                                    class="fas fa-check-circle"></i> Terverifikasi</span>
+                                                            <span class="badge badge-success">
+                                                                <i class="fas fa-check-circle"></i> Terverifikasi
+                                                            </span>
                                                         @elseif ($order->is_payment == 2)
-                                                            <span class="badge badge-danger"><i
-                                                                    class="fas fa-times-circle"></i> Ditolak</span>
+                                                            <span class="badge badge-danger">
+                                                                <i class="fas fa-times-circle"></i> Ditolak
+                                                            </span>
                                                         @else
-                                                            <span class="badge badge-warning"><i class="fas fa-clock"></i>
-                                                                Menunggu</span>
+                                                            <span class="badge badge-warning">
+                                                                <i class="fas fa-clock"></i> Menunggu
+                                                            </span>
                                                         @endif
                                                     </td>
                                                     <td>{{ $order->rejection_note ?? '-' }}</td>
@@ -285,7 +354,8 @@
                                                                                     class="modal-header bg-danger text-white">
                                                                                     <h5 class="modal-title"
                                                                                         id="rejectModalLabel">
-                                                                                        Tolak Pembayaran</h5>
+                                                                                        Tolak Pembayaran
+                                                                                    </h5>
                                                                                     <button type="button"
                                                                                         class="close text-white"
                                                                                         data-dismiss="modal"
@@ -343,7 +413,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="15" class="text-center text-muted py-4">
+                                                    <td colspan="17" class="text-center text-muted py-4">
                                                         <i class="fas fa-inbox fa-2x mb-2"></i><br>
                                                         Tidak ada pesanan menunggu verifikasi.
                                                     </td>
@@ -357,7 +427,6 @@
                         <!-- /.card -->
                     </div>
                 </div>
-                <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
         </div>
@@ -370,6 +439,83 @@
             var year = $(this).val();
             window.location.href = "{{ url('admin/dashboard') }}?year=" + year;
         });
+        // Chart Pembelian Produk per Bulan per Supplier
+        const purchaseData = @json($purchasePerMonth);
+
+        // Ambil bulan unik
+        const months = [...new Set(purchaseData.map(item => item.bulan))];
+
+        // Buat kombinasi supplier + produk
+        const suppliers = [...new Set(purchaseData.map(item =>
+            (item.supplier_name ?? '') + ' - ' + (item.product_name ?? '')
+        ))];
+
+        const colors = ['#007bff', '#dc3545', '#ffc107', '#28a745', '#6f42c1',
+            '#fd7e14', '#20c997', '#6610f2', '#17a2b8', '#e83e8c'
+        ];
+
+        const datasets = suppliers.map((supplier, index) => {
+            const monthlyData = Array(12).fill(0);
+
+            purchaseData.forEach(item => {
+                const key = (item.supplier_name ?? '') + ' - ' + (item.product_name ?? '');
+                if (key === supplier) {
+                    const monthIndex = parseInt(item.bulan.split('-')[1]) - 1;
+                    monthlyData[monthIndex] = parseFloat(item.total_qty ?? 0);
+                }
+            });
+
+            return {
+                label: supplier,
+                data: monthlyData,
+                backgroundColor: colors[index % colors.length],
+                borderWidth: 1
+            };
+        });
+
+
+        const ctx = document.getElementById('supplierChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+                    'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+                ],
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.raw || 0;
+                                return val.toLocaleString('id-ID') + ' pcs'; // contoh: 141 pcs
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('id-ID') + ' pcs';
+                            }
+                        }
+                    }
+                }
+            }
+
+        });
+
 
         var $salesChart = $('#sales-chart-order');
 

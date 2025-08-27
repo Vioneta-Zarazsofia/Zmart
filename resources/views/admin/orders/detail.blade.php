@@ -175,12 +175,15 @@
                                             <option value="" disabled selected>Pilih Kurir</option>
                                             @foreach ($couriers as $courier)
                                                 <option value="{{ $courier->id }}"
-                                                    {{ $order->courier_id == $courier->id ? 'selected' : '' }}>
-                                                    {{ $courier->name }}
+                                                    {{ $order->courier_id == $courier->id ? 'selected' : '' }}
+                                                    {{ $courier->total_barang >= 80 ? 'disabled' : '' }}>
+                                                    {{ $courier->name }} - {{ $courier->total_barang }} barang hari ini
+                                                    {{ $courier->total_barang >= 80 ? '(Penuh)' : '' }}
                                                 </option>
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-4 mb-3">
                                         <label>Tanggal Pengiriman</label>
                                         <input type="date" name="delivered_time" class="form-control"
@@ -201,6 +204,43 @@
                         </div>
                     </div>
                 @endif
+                {{-- Total Barang Dibawa per Kurir Hari Ini --}}
+                <div class="card-custom mb-4">
+                    <div class="card-header-custom bg-primary text-white" style="font-size: 1.2rem;">
+                        📦 Total Barang Dibawa Kurir Hari Ini
+                    </div>
+                    <div class="card-body table-responsive">
+                        <table class="table table-bordered table-hover align-middle text-sm">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th>Nama Kurir</th>
+                                    <th>Total Barang (Qty)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($couriers as $courier)
+                                    <tr class="text-center align-middle">
+                                        <td>{{ $courier->name }}</td>
+                                        <td>{{ $courier->total_barang }}</td>
+                                        <td>
+                                            @if ($courier->total_barang >= 80)
+                                                <span class="badge badge-danger">Maksimal (80)</span>
+                                            @else
+                                                <span class="badge badge-success">Tersedia</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center text-muted">Tidak ada data
+                                            kurir.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
                 {{-- Detail Produk --}}
                 <div class="card-custom mb-4">

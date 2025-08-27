@@ -16,14 +16,14 @@
             <div class="header-right">
                 <ul class="top-menu">
                     <li>
-                        <a href="#">Links</a>
+                        <a href="#"><i class="icon-user"></i></a>
                         <ul>
-                            <li>
+                            {{-- <li>
                                 <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $getStemSettingApp->phone) }}"
                                     target="_blank">
                                     <i class="icon-whatsapp"></i>WhatsApp: {{ $getStemSettingApp->phone }}
                                 </a>
-                            </li>
+                            </li> --}}
                             @if (!empty(Auth::check()))
                                 <li><a href="{{ url('my-wishlist') }}"><i class="icon-heart-o"></i>My Wishlist
                                     </a>

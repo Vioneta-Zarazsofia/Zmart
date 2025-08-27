@@ -18,9 +18,9 @@ class SupplierModel extends Model
         'status',
     ];
 
-    public function purchases()
+ public function purchases()
     {
-        return $this->hasMany(Purchase::class);
+        return $this->hasMany(Purchase::class, 'supplier_id');
     }
 
     public function products()

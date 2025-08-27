@@ -9,6 +9,8 @@ use App\Models\SubCategoryModel;
 use App\Models\BrandModel;
 use App\Models\ProductReviewModel;
 use Illuminate\Support\Facades\Auth;
+use App\Models\OrderModel;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -145,4 +147,5 @@ class ProductController extends Controller
             ])->render(),
         ], 200);
     }
+
 }

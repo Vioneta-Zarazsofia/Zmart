@@ -210,57 +210,6 @@ class PaymentController extends Controller
         }
             echo json_encode($json);
     }
-    // public function checkout_payment(Request $request)
-    // {
-    //     if(!empty(Cart::getSubTotal()) && !empty($request->order_id))
-    //     {
-    //         $order_id = base64_decode($request->order_id);
-    //         $getOrder = OrderModel::getSingle($order_id);
-    //         if(!empty($getOrder))
-    //         {
-    //             if ($getOrder->payment_method == 'cash')
-    //             {
-    //                 $getOrder->is_payment = 1;
-    //                 $getOrder->save();
-
-    //                 Cart::clear();
-    //                 return redirect('cart')->with('success', "Pesanan Anda telah berhasil dilakukan dan pembayaran Anda telah diterima. Terima kasih telah berbelanja di toko kami!");
-    //             }
-    //             else if($getOrder->payment_method == 'paypal')
-    //             {
-    //                 $query = array();
-    //                 $quary['business'] = "vipulbusiness@gmail.com";
-    //                 $quary['cmd'] = '_xclick';
-    //                 $quary['item_name'] = "E-Commerce";
-    //                 $query['no_shipping'] = 1;
-    //                 $quary['item_number'] = $getOrder->id;
-    //                 $quary['amount'] = $getOrder->total_amount;
-    //                 $quary['currency_code'] = 'USD';
-    //                 $quary['return'] = url('paypal/success-payment');
-    //                 $quary['cancel_return'] = url('checkout');
-
-    //                 $query_string = http_build_query($quary);
-
-    //                 header('Location: https://www.sandbox.paypal.com/cgi-bin/webscr?' . $query_string);
-
-    //                 exit();
-    //             }
-    //             else if ($getOrder->payment_method == 'stripe')
-    //             {
-
-    //             }
-    //         }
-    //         else
-    //         {
-    //             abort(404);
-    //         }
-    //     }
-
-    //     else
-    //     {
-    //         abort(404);
-    //     }
-    //
     public function checkout_payment(Request $request)
 {
     if (!empty(Cart::getSubTotal()) && !empty($request->order_id)) {
@@ -290,35 +239,6 @@ class PaymentController extends Controller
         abort(404);
     }
 }
-
-    // public function paypal_success_payment(Request $request)
-    // {
-    //     if(!empty($request->item_number)&& !empty($request->st)&& $request->st == 'completed')
-    //     {
-    //         $getOrder = OrderModel::getSingle($$request->item_number);
-    //         if(!empty($getOrder))
-    //         {
-    //             $getOrder->is_payment = 1;
-    //             $getOrder->transaction_id = $request->txn;
-    //             $getOrder->payment_data = json_encode($request->all());
-    //             $getOrder->save();
-
-    //             Cart::clear();
-    //             return redirect('cart')->with('success', "Pesanan Anda telah berhasil dilakukan dan pembayaran Anda telah diterima. Terima kasih telah berbelanja di toko kami!");
-    //         }
-    //         else
-    //         {
-    //             abort(404);
-    //         }
-    //     }
-    //     else
-    //     {
-    //         abort(404);
-    //     }
-    //     {
-
-    //     }
-    // }
    public function confirmPaymentForm($order_id)
     {
         $order = OrderModel::findOrFail($order_id);
@@ -335,10 +255,9 @@ public function submitPaymentProof(Request $request, $order_id)
 
     if ($request->hasFile('payment_proof')) {
         $file = $request->file('payment_proof');
-        $filename = time() . '_' . $file->getClientOriginalName(); // contoh: 1720801932_bukti.jpg
+        $filename = time() . '_' . $file->getClientOriginalName();
         $destinationPath = public_path('uploads/payment_proofs'); // akan disimpan di /public/uploads/payment_proofs
 
-        // Pastikan folder ada, kalau belum buat
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }

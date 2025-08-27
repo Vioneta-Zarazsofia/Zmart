@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
-use Intervention\Image\Colors\Rgb\Channels\Red;
 
 class ProductModel extends Model
 {
@@ -199,5 +198,12 @@ class ProductModel extends Model
             return 0;
         }
     }
+public static function getTotalPurchaseAmountMonth($start_date, $end_date)
+{
+    return self::whereBetween('created_at', [$start_date, $end_date])
+        ->selectRaw('SUM(stock * purchase_price) as total')
+        ->value('total') ?? 0;
+}
+
 
 }

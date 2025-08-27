@@ -41,165 +41,182 @@
                             <a href="{{ url('admin/dashboard') }}"
                                 class="nav-link @if (Request::segment(2) == 'dashboard') active @endif">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard {{ Request::segment(2) }}
-                                </p>
+                                <p>Dashboard</p>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/admin/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'admin') active @endif">
-                                <i class="nav-icon fas fa-user"></i>
+                        <!-- Group: Manajemen Pengguna -->
+                        <li
+                            class="nav-item has-treeview {{ Request::is('admin/admin*') || Request::is('admin/customer*') || Request::is('admin/courier*') || Request::is('admin/supplier*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-users-cog"></i>
                                 <p>
-                                    Admin
+                                    Manajemen Pengguna
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/customer/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'customer') active @endif">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>
-                                    Customer
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/courier/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'courier') active @endif">
-                                <i class="nav-icon fas fa-truck"></i>
-                                <p> Kurir </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/supplier/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'supplier') active @endif">
-                                <i class="nav-icon fas fa-people-carry"></i>
-                                <p> Suplier </p>
-                            </a>
+                            <ul class="nav nav-treeview pl-3">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/admin/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'admin') active @endif">
+                                        <i class="fas fa-user nav-icon"></i>
+                                        <p>Admin</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/customer/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'customer') active @endif">
+                                        <i class="fas fa-users nav-icon"></i>
+                                        <p>Customer</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/courier/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'courier') active @endif">
+                                        <i class="fas fa-truck nav-icon"></i>
+                                        <p>Kurir</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/supplier/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'supplier') active @endif">
+                                        <i class="fas fa-people-carry nav-icon"></i>
+                                        <p>Supplier</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/category/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'category') active @endif">
-                                <i class="nav-icon fas fa-list-alt"></i>
+                        <!-- Group: Manajemen Produk -->
+                        <li
+                            class="nav-item has-treeview {{ Request::is('admin/category*') || Request::is('admin/sub_category*') || Request::is('admin/brand*') || Request::is('admin/product*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-boxes"></i>
                                 <p>
-                                    Category
+                                    Manajemen Produk
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
+                            <ul class="nav nav-treeview pl-3">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/category/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'category') active @endif">
+                                        <i class="fas fa-list-alt nav-icon"></i>
+                                        <p>Category</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/sub_category/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'sub_category') active @endif">
+                                        <i class="fas fa-th-list nav-icon"></i>
+                                        <p>Sub Category</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/brand/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'brand') active @endif">
+                                        <i class="fas fa-tags nav-icon"></i>
+                                        <p>Brand</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/product/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'product') active @endif">
+                                        <i class="fab fa-product-hunt nav-icon"></i>
+                                        <p>Produk</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/sub_category/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'sub_category') active @endif">
-                                <i class="nav-icon fas fa-th-list"></i>
+                        <!-- Group: Transaksi -->
+                        <li
+                            class="nav-item has-treeview {{ Request::is('admin/purchase*') || Request::is('admin/orders*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-shopping-cart"></i>
                                 <p>
-                                    Sub Category
+                                    Transaksi
+                                    <i class="right fas fa-angle-left"></i>
                                 </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/brand/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'brand') active @endif">
-                                <i class="nav-icon fas fa-tags"></i>
-                                <p>
-                                    Brand
-                                </p>
-                            </a>
-                        </li>
-                        {{-- <li class="nav-item">
-                            <a href="{{ url('admin/color/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'size') active @endif">
-                                <i class="nav-icon fas fa-palette"></i>        <p>
-                                    Color
-                                </p>
-                            </a>
-                        </li> --}}
-                        <li class="nav-item">
-                            <a href="{{ url('admin/purchase') }}"
-                                class="nav-link {{ Request::is('admin/purchase*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-truck-loading"></i>
-                                <p>Pembelian Produk</p>
-                            </a>
+                            <ul class="nav nav-treeview pl-3">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/purchase') }}"
+                                        class="nav-link {{ Request::is('admin/purchase*') ? 'active' : '' }}">
+                                        <i class="fas fa-truck-loading nav-icon"></i>
+                                        <p>Pembelian Produk</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/orders/waiting') }}"
+                                        class="nav-link @if (Request::segment(2) == 'orders') active @endif">
+                                        <i class="fas fa-money-check-alt nav-icon"></i>
+                                        <p>Pesanan</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a href="{{ url('admin/product/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'product') active @endif">
-                                <i class="nav-icon fab fa-product-hunt"></i>
-                                <p>
-                                    Produk
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/orders/waiting') }}"
-                                class="nav-link @if (Request::segment(2) == 'orders' && Request::segment(3) == 'waiting') active @endif">
-                                <i class="nav-icon fas fa-money-check-alt"></i>
-                                <p>
-                                    Pesanan
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/discountcode/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'discountcode') active @endif">
-                                <i class="nav-icon fas fa-percent"></i>
-                                <p>
-                                    Kode Diskon
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/shipping_charge/list') }}"
-                                class="nav-link @if (Request::segment(2) == 'shipping_charge') active @endif">
-                                <i class="nav-icon fas fa-shipping-fast"></i>
-                                <p>
-                                    Biaya Pengiriman
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ url('admin/contactus') }}"
-                                class="nav-link @if (Request::segment(2) == 'contactus') active @endif">
-                                <i class="nav-icon fas fa-phone"></i>
-                                <p>
-                                    Contact Us
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{ url('admin/system-setting') }}"
-                                class="nav-link @if (Request::segment(2) == 'system-setting') active @endif">
+                        <!-- Group: Pengaturan -->
+                        <li
+                            class="nav-item has-treeview {{ Request::is('admin/discountcode*') || Request::is('admin/shipping_charge*') || Request::is('admin/system-setting*') || Request::is('admin/contactus') || Request::is('admin/faq*') ? 'menu-open' : '' }}">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
-                                <p>Pengaturan Sistem</p>
+                                <p>
+                                    Pengaturan
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.faq.index') }}"
-                                class="nav-link @if (Request::segment(2) == 'faq') active @endif">
-                                <i class="nav-icon fas fa-question-circle"></i>
-                                <p>FAQ</p>
-                            </a>
+                            <ul class="nav nav-treeview pl-3">
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/discountcode/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'discountcode') active @endif">
+                                        <i class="fas fa-percent nav-icon"></i>
+                                        <p>Kode Diskon</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/shipping_charge/list') }}"
+                                        class="nav-link @if (Request::segment(2) == 'shipping_charge') active @endif">
+                                        <i class="fas fa-shipping-fast nav-icon"></i>
+                                        <p>Biaya Pengiriman</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/contactus') }}"
+                                        class="nav-link @if (Request::segment(2) == 'contactus') active @endif">
+                                        <i class="fas fa-phone nav-icon"></i>
+                                        <p>Contact Us</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('admin.faq.index') }}"
+                                        class="nav-link @if (Request::segment(2) == 'faq') active @endif">
+                                        <i class="fas fa-question-circle nav-icon"></i>
+                                        <p>FAQ</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ url('admin/system-setting') }}"
+                                        class="nav-link @if (Request::segment(2) == 'system-setting') active @endif">
+                                        <i class="fas fa-cogs nav-icon"></i>
+                                        <p>Pengaturan Sistem</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="nav-item">
                             <a href="{{ url('admin/logout') }}" class="nav-link">
-
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
-                                <p>
-                                    Logout
-                                </p>
+                                <p>Logout</p>
                             </a>
                         </li>
 
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
+
             </div>
             <!-- /.sidebar -->
         </aside>
