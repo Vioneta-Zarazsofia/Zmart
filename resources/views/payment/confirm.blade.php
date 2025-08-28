@@ -18,7 +18,7 @@
                         <li class="mb-2"><strong>🏦 Bank:</strong> <span class="text-dark">BRI</span></li>
                         <li class="mb-2 d-flex flex-wrap align-items-center">
                             <strong>🔢 No. Rekening:</strong>
-                            <span id="rekening-number" class="text-primary fw-bold ms-2 fs-5">6441 0101 7045 534</span>
+                            <span id="rekening-number" class="text-primary fw-bold ms-2 fs-5">644101008958538</span>
                             <button type="button"
                                 class="btn btn-outline-primary btn-sm ms-3 px-2 py-1 d-flex align-items-center gap-1"
                                 style="font-size: 0.85rem; min-width: 60px;" aria-label="Salin nomor rekening"
@@ -28,7 +28,7 @@
                             </button>
                         </li>
 
-                        <li class="mb-2"><strong>👤 Atas Nama:</strong> VIONETA ZARAZSOFIA P</li>
+                        <li class="mb-2"><strong>👤 Atas Nama:</strong> MALIKI</li>
                         <li class="mt-3"><strong>💰 Total:</strong>
                             <span class="badge bg-success text-white fs-6 px-3 py-2">
                                 Rp{{ number_format($order->total_amount, 0, ',', '.') }}

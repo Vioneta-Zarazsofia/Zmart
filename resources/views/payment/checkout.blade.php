@@ -184,8 +184,8 @@
                                         <p>Silakan transfer ke rekening:</p>
                                         <ul>
                                             <li>Bank: BRI</li>
-                                            <li>No. Rekening: <strong>6441 0101 7045 534</strong></li>
-                                            <li>Atas Nama: <strong>VIONETA ZARAZSOFIA</strong></li>
+                                            <li>No. Rekening: <strong>644101008958538</strong></li>
+                                            <li>Atas Nama: <strong>MALIKI</strong></li>
                                         </ul>
                                     </div>
 
@@ -207,7 +207,7 @@
     <script>
         $(document).ready(function() {
             const kotaNgawiId = 3521;
-            const userSubdistrict = "{{ Auth::user()->subdistrict ?? '' }}"; 
+            const userSubdistrict = "{{ Auth::user()->subdistrict ?? '' }}";
             const userVillage = "{{ Auth::user()->village ?? '' }}";
 
             // Load subdistricts (kecamatan)
